@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--
+    <script src="https://cdn.tailwindcss.com"></script>
+    -->
+    
+    <link rel="stylesheet" href="style.css">
+    <title>Pokeri</title>
+</head>
+<body>
+    <div class="gamearea">
+        <div class="bet">
+            <p id="saldo"></p>
+            <p id="bet">Panos: x</p>
+            <div class="money">
+                <div class="coin" id="twentySent">0.2€</div>
+                <div class="coin" id="fiftySent">0.5€</div>
+                <div class="coin" id="oneEuro">1€</div>
+                <div class="coin" id="twoEuro">2€</div>
+                
+            </div>
+        </div>
+
+        <div class="winTable">
+            <table id="table">
+                <tr class="bet-row">
+                    <td>Panos</td>
+                    <td>0.2€</td>
+                    <td>0.4€</td>
+                    <td>0.6€</td>
+                    <td>0.8€</td>
+                    <td>1€</td>
+                </tr>
+                <tr>
+                    <td>Viitoset</td>
+                    <td>10€</td>
+                    <td>20€</td>
+                    <td>30€</td>
+                    <td>40€</td>
+                    <td>50€</td>
+                </tr>
+                <tr>
+                    <td>Värisuora</td>
+                    <td>6€</td>
+                    <td>12€</td>
+                    <td>18€</td>
+                    <td>24€</td>
+                    <td>30€</td>
+                </tr>
+                <tr>
+                    <td>Neloset</td>
+                    <td>3€</td>
+                    <td>6€</td>
+                    <td>9€</td>
+                    <td>12€</td>
+                    <td>15€</td>
+                </tr>
+                <tr>
+                    <td>Täyskäsi</td>
+                    <td>1.6€</td>
+                    <td>3.2€</td>
+                    <td>4.8€</td>
+                    <td>6.4€</td>
+                    <td>8€</td>
+                </tr>
+                <tr>
+                    <td>Väri</td>
+                    <td>0.8€</td>
+                    <td>1.6€</td>
+                    <td>2.4€</td>
+                    <td>3.2€</td>
+                    <td>4€</td>
+                </tr>
+                <tr>
+                    <td>Kolmoset</td>
+                    <td>0.4€</td>
+                    <td>0.8€</td>
+                    <td>1.6€</td>
+                    <td>2.4€</td>
+                    <td>2€</td>
+                </tr>
+                <tr>
+                    <td>Kaksi paria</td>
+                    <td>0.4€</td>
+                    <td>0.8€</td>
+                    <td>1.6€</td>
+                    <td>2.4€</td>
+                    <td>2€</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="cards">
+            <div class="card card1"><img src="/media/cards/1B.svg" alt=""></div>
+            <div class="card card2"><img src="/media/cards/1B.svg" alt=""></div>
+            <div class="card card3"><img src="/media/cards/1B.svg" alt=""></div>
+            <div class="card card4"><img src="/media/cards/1B.svg" alt=""></div>
+            <div class="card card5"><img src="/media/cards/1B.svg" alt=""></div>
+        </div>
+
+        <div class="controls">
+            <div class="button betBtn">Panos</div>
+            <div class="button doubleBtn">Tuplaa</div>
+            <div class="button smallBtn">Pieni</div>
+            <div class="button bigBtn">Suuri</div>
+            <div class="button cashoutBtn">Voitonmaksu</div>
+            <div class="button dealBtn">Jako</div>
+        </div>
+
+
+
+    </div><!--game area end-->
+</body>
+<script src="script.js"></script>
+</html>

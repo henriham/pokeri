@@ -1,0 +1,124 @@
+body{
+    background-color: green;    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.gamearea{
+    height: 100%;
+    width: 100%;
+    max-width:800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bet{
+    border: 2px solid pink;
+    margin: 5px 5px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+.money{
+    display: flex;
+    align-items: center;
+}
+.coin{
+    background-color: yellow;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    font-size: 14px;
+    padding: 0;
+    margin-left: 5px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.winTable{
+    width: 90%;
+    color: rgb(255, 255, 198);
+    margin-top: 30px;
+}
+table{
+    width: 100%;
+    border-collapse: collapse;    
+}
+
+td{
+    line-height: 1;
+    border: 2px solid yellow;
+}
+
+.bet-row{
+    background-color: red;
+}
+
+.cards{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    gap: 5px;
+}
+.card{
+    border: 1px solid blue;
+    
+    object-fit: cover;    
+}
+.cards img{
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.controls{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.button{
+    border: 2px solid rgb(97, 94, 94);
+    cursor: pointer;
+    user-select: none;
+    padding: 5px;
+    border-radius: 5%;
+    
+}
+
+/* Control Btn styling start */
+.betBtn{
+    background-color:rgb(62, 62, 231);
+}
+.doubleBtn{
+    background-color: orange;
+}
+.smallBtn{
+    background-color: red;
+}
+.bigBtn{
+    background-color: red;
+}
+.cashoutBtn{
+    background-color: yellow;
+}
+.dealBtn{
+    background-color: rgb(62, 62, 231);
+}
+
+
+/* Control Btn styling end */
