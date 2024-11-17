@@ -52,13 +52,12 @@ twoEuro.addEventListener('click', ()=>{
     }, 150);
 })
 // Coins and Saldo component end
-// Bet component start
+// Bet and wintable component start
 const bet = [0.2, 0.4, 0.6, 0.8, 1];
 let currentIndex = 0;
 const betBtn = document.querySelector('.betBtn');
 const betElement = document.querySelector('#bet');
 betElement.textContent = `Panos: ${bet[currentIndex]}€`;
-
 
 const updateBet = () => {
     if (betBtn.disabled) return;
@@ -70,30 +69,20 @@ const updateBet = () => {
     }, 150);
 };
 
-betBtn.addEventListener('click', () =>{
-    updateBet();
-    tableCol();
-});
-
-
-// Winnings table column color change start
 let previousColumnIndex = -1;
 const tableCol = () => {
     const table = document.querySelector('#table');
     const rows = table.rows;    
-    
     for(let i = 0; i < rows[0].cells.length; i++){
         const cell = rows[0].cells[i];
-        console.log(cell.textContent)
-        //console.log(`${bet[currentIndex]}€`)
         if(cell.textContent === `${bet[currentIndex]}€`){
-            console.log("they match !!!")
             if(previousColumnIndex !== -1){
                 for( let rowIndex = 1; rowIndex < rows.length; rowIndex++){
                     const row = rows[rowIndex];
                     const oldTargetCell = row.cells[previousColumnIndex];
                     if(oldTargetCell) {
                         oldTargetCell.style.backgroundColor = 'green';
+                        
                     }
                 }
             }         
@@ -102,7 +91,8 @@ const tableCol = () => {
                 const row = rows[rowIndex];         
                 const targetCell = row.cells[i];                
                 if(targetCell){
-                    targetCell.style.backgroundColor = 'orange'
+                    targetCell.style.backgroundColor = 'red'
+                    
                     }
                 }
             previousColumnIndex = i;
@@ -111,11 +101,25 @@ const tableCol = () => {
     }
 };
 tableCol()
-// Winnings table column color change end
+betBtn.addEventListener('click', () =>{
+    updateBet();
+    tableCol();
+});
+// Bet and wintable component  end
+
+// Cards start
+const allCards = [];
+fetch('cards.php')
+.then(response => response.json())
+.then(files =>{
+    files.forEach(file =>{
+        const filePath = `${file}`;
+        allCards.push(filePath)
+        
+    })
+})
+.catch(error => console.error('error: ', error))
 
 
-// EVENT LISTENERS !!
-
-
-
-// EVENT LISTENERS !!
+// Cards end
+console.log(allCards)
