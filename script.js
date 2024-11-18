@@ -100,7 +100,7 @@ const tableCol = () => {
         }
     }
 };
-tableCol()
+tableCol();
 betBtn.addEventListener('click', () =>{
     updateBet();
     tableCol();
@@ -108,18 +108,49 @@ betBtn.addEventListener('click', () =>{
 // Bet and wintable component  end
 
 // Cards start
-const allCards = [];
-fetch('cards.php')
-.then(response => response.json())
-.then(files =>{
-    files.forEach(file =>{
-        const filePath = `${file}`;
-        allCards.push(filePath)
-        
-    })
-})
-.catch(error => console.error('error: ', error))
+/* const allCards = [];
+async function fetchCards(){
+    
+    try{
+        const response = await fetch('cards.php');
+        const files = await response.json();
 
+        files.forEach(file =>{
+            const filePath = `${file}`;
+            allCards.push(filePath)
+        });        
+    }catch (error){
+        console.error('Error: ', error);
+    }
+}; */
+let allCards = [];
+async function fetchCards(){
+    const response = await fetch('cards.php');
+    allCards = await response.json();
+    
+}
 
+async function getHand(){
+    await fetchCards();
+    
+    const picker = [];
+    const hand = [];
+    while(hand.length < 5){
+        let random = Math.round(Math.random()*53)
+        if(!picker.includes(random)){
+            picker.push(random)
+            let pickedCard = allCards.splice(random, 1)[0];
+            if(pickedCard){
+                hand.push(pickedCard)
+            }
+            
+            
+        }        
+    }
+    console.log(allCards)
+    console.log(picker)
+    console.log(hand)
+}
+
+getHand()
 // Cards end
-console.log(allCards)
