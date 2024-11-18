@@ -73,8 +73,6 @@ td{
     gap: 5px;
 }
 .card{
-    border: 1px solid blue;
-    
     object-fit: cover;    
 }
 .cards img{

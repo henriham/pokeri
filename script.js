@@ -108,49 +108,50 @@ betBtn.addEventListener('click', () =>{
 // Bet and wintable component  end
 
 // Cards start
-/* const allCards = [];
-async function fetchCards(){
-    
-    try{
-        const response = await fetch('cards.php');
-        const files = await response.json();
-
-        files.forEach(file =>{
-            const filePath = `${file}`;
-            allCards.push(filePath)
-        });        
-    }catch (error){
-        console.error('Error: ', error);
-    }
-}; */
 let allCards = [];
-async function fetchCards(){
+
+async function getHand(){      
     const response = await fetch('cards.php');
     allCards = await response.json();
-    
-}
-
-async function getHand(){
-    await fetchCards();
-    
-    const picker = [];
     const hand = [];
     while(hand.length < 5){
-        let random = Math.round(Math.random()*53)
-        if(!picker.includes(random)){
-            picker.push(random)
+        let random = Math.round(Math.random()*allCards.length)    
             let pickedCard = allCards.splice(random, 1)[0];
-            if(pickedCard){
-                hand.push(pickedCard)
-            }
-            
-            
-        }        
-    }
-    console.log(allCards)
-    console.log(picker)
-    console.log(hand)
-}
+            if(pickedCard){            
+            hand.push(pickedCard);
+            }   
+    }    
+    return hand;
+};
 
-getHand()
+async function displayHand(){
+    let hand = await getHand();
+    console.log(hand);
+    console.log(allCards)
+
+    let cardOne = document.querySelector('#card0');
+    let cardTwo = document.querySelector('#card1');
+    let cardThree = document.querySelector('#card2');
+    let cardFour = document.querySelector('#card3');
+    let cardFive = document.querySelector('#card4');
+
+    cardOne.src = `media/cards/${hand[0]}.svg`
+    cardTwo.src = `media/cards/${hand[1]}.svg`
+    cardThree.src = `media/cards/${hand[2]}.svg`
+    cardFour.src = `media/cards/${hand[3]}.svg`
+    cardFive.src = `media/cards/${hand[4]}.svg`
+
+
+
+
+
+
+    console.log("diipa")
+
+}
+displayHand();
+
+
+
+
 // Cards end
