@@ -11,11 +11,13 @@ body{
 .gamearea{
     height: 100%;
     width: 100%;
-    max-width:800px;
+    max-width:1080px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    
 }
 
 .bet{
@@ -68,17 +70,45 @@ td{
     margin-top: 30px;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     gap: 5px;
+    
 }
 .card{
-    object-fit: cover;    
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    
+    
+    overflow: hidden;
+    
+        
 }
-.cards img{
+
+.card img{
     width: 100%;
-    height: auto;
-    display: block;
+    height: 100%;
+    
+    object-fit: cover;
+
+    user-select: none;
+    pointer-events: none;
+}
+
+.card h1, .selected{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: yellow;
+    background-color: rgba(252, 55, 55, 0.5);
+    text-align: center;
+    
 }
 
 .controls{

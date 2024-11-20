@@ -20,7 +20,7 @@ twentySent.addEventListener('click', ()=>{
     setTimeout(()=>{
         twentySent.disabled = false;        
     }, 150);
-})
+});
 
 fiftySent.addEventListener('click', ()=>{
     if (fiftySent.disabled) return;    
@@ -30,7 +30,7 @@ fiftySent.addEventListener('click', ()=>{
     setTimeout(()=>{
         fiftySent.disabled = false;        
     }, 150);
-})
+});
 
 oneEuro.addEventListener('click', ()=>{
     if (oneEuro.disabled) return;    
@@ -40,7 +40,7 @@ oneEuro.addEventListener('click', ()=>{
     setTimeout(()=>{
         oneEuro.disabled = false;        
     }, 150);
-})
+});
 
 twoEuro.addEventListener('click', ()=>{
     if (twoEuro.disabled) return;    
@@ -50,7 +50,7 @@ twoEuro.addEventListener('click', ()=>{
     setTimeout(()=>{
         twoEuro.disabled = false;        
     }, 150);
-})
+});
 // Coins and Saldo component end
 // Bet and wintable component start
 const bet = [0.2, 0.4, 0.6, 0.8, 1];
@@ -113,6 +113,7 @@ let allCards = [];
 async function getHand(){      
     const response = await fetch('cards.php');
     allCards = await response.json();
+    
     const hand = [];
     while(hand.length < 5){
         let random = Math.round(Math.random()*allCards.length)    
@@ -125,9 +126,14 @@ async function getHand(){
 };
 
 async function displayHand(){
+    
+    const selectedCards = document.querySelectorAll('.card');
+          
     let hand = await getHand();
+    console.log(secondDeal)
     console.log(hand);
     console.log(allCards)
+    
 
     let cardOne = document.querySelector('#card0');
     let cardTwo = document.querySelector('#card1');
@@ -135,21 +141,61 @@ async function displayHand(){
     let cardFour = document.querySelector('#card3');
     let cardFive = document.querySelector('#card4');
 
-    cardOne.src = `media/cards/${hand[0]}.svg`
-    cardTwo.src = `media/cards/${hand[1]}.svg`
-    cardThree.src = `media/cards/${hand[2]}.svg`
-    cardFour.src = `media/cards/${hand[3]}.svg`
-    cardFive.src = `media/cards/${hand[4]}.svg`
+    if(secondDeal===false){
+        cardOne.src = `./media/cards/${hand[0]}.svg`
+        cardTwo.src = `./media/cards/${hand[1]}.svg`
+        cardThree.src = `./media/cards/${hand[2]}.svg`
+        cardFour.src = `./media/cards/${hand[3]}.svg`
+        cardFive.src = `./media/cards/${hand[4]}.svg`
+        
+    }
+
+
+    
+    
+
+    function selectCards(){
+        
+        console.log(secondDeal)
+        selectedCards.forEach((card, index) => {
+            card.addEventListener('click', () => {
+                console.log(index + " pressed"+" "+ hand[index]);
+                const existingH1 = card.querySelector('h1');
+                const h1 = document.createElement("h1");                
+                if(existingH1){
+                    existingH1.remove();
+                }else{
+                    h1.textContent = 'LUKITTU';
+                    h1.className = 'selected';
+                    card.appendChild(h1);
+                }                
+            });
+        });   
+    };
+    
+
+
+    selectCards();
+};
+
+let secondDeal = false; 
+const dealBtn = document.querySelector('.dealBtn');
+dealBtn.addEventListener('click', displayHand);
 
 
 
 
+let cardOneDiv = document.querySelector('.cardOneDiv');
+let cardTwoDiv = document.querySelector('.cardTwoDiv');
+let cardThreeDiv = document.querySelector('.cardThreeDiv');
+let cardFourDiv = document.querySelector('.cardFourDiv');
+let cardFiveDiv = document.querySelector('.cardFiveDiv');
 
 
-    console.log("diipa")
 
-}
-displayHand();
+/* cardOneDiv.addEventListener('click', ()=>{
+    console.log("card one is pressed !!");
+}); */
 
 
 
