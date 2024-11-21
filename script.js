@@ -105,101 +105,121 @@ betBtn.addEventListener('click', () =>{
 
 // Cards start
 let allCards = [];
+let hand = [];
+let selectedCards = [];
 
-async function getHand(){      
+async function initCards(){
     const response = await fetch('cards.php');
     allCards = await response.json();
+    hand = [];
+    selectedCards = [];
     
-    const hand = [];
+}
+
+async function displayHand(){
+    if(allCards.length === 0){
+        await initCards();
+    }    
+    if(hand.length === 0){
+        hand = getRandomCards(5);
+        console.log("2if" + hand)
+    
+    }else{
+        let newCardsNeeded = 5 - selectedCards.length;
+        let newCards = getRandomCards(newCardsNeeded);
+
+        hand = hand.map((card, index) => {
+            return selectedCards.includes(index) ? card : newCards.shift();
+        });
+    }
+
+    let displayedCards = document.querySelectorAll('.card');
+    displayedCards.forEach((card, index) => {
+        const h1El = document.querySelector('h1');
+        if(h1El){
+            h1El.remove();
+        }
+        card.querySelector('img').src = `./media/cards/${hand[index]}.svg`;
+    });
+    cardSelectHandler();
+    
+
+}
+
+function getRandomCards(num){
+    const newCards = [];
+    while(newCards.length < num){
+        let random = Math.floor(Math.random() * allCards.length);
+        let pickedCard = allCards.splice(random, 1)[0];
+        if(pickedCard){
+            newCards.push(pickedCard);
+        }
+    }
+    console.log("newCards "+ newCards)
+    return newCards;
+}
+
+function cardSelectHandler(){
+    const displayedCards = document.querySelectorAll('.card');
+    displayedCards.forEach((card, index) => {
+        const h1El = document.querySelector('h1');
+        if(h1El){
+            h1El.remove();    
+        }else{
+            const h1 = document.createElement('h1');
+            h1.textContent = 'LUKITTU';
+            h1.className = '.selected';
+            card.appendChild(h1);
+            selectedCards.push(index);
+        }
+        console.log(`Selected Cards: ${selectedCards}`);
+    })
+}
+
+
+
+document.querySelector('.dealBtn').addEventListener('click', displayHand)
+initCards()
+
+
+
+
+
+/* async function getHand(){      
+    
+       
+    
     while(hand.length < 5){
-        let random = Math.round(Math.random()*allCards.length)    
+        let random = Math.floor(Math.random()*allCards.length)    
             let pickedCard = allCards.splice(random, 1)[0];
             if(pickedCard){            
             hand.push(pickedCard);
             }   
-    }    
+    }  
+    console.log(allCards);
+    
     return hand;
 };
 
-let secondDeal = false; 
 
 async function displayHand(){
-        
-    let hand = await getHand();
-    console.log(secondDeal);
-    console.log(hand);
-    console.log(allCards);
-
-    let selectedCards = document.querySelectorAll('.card');
-
-    selectedCards.forEach((card) => {
-        const existingH1 = card.querySelector('h1')
-        if(existingH1){
-            existingH1.remove();
-        }
+        hand = await getHand();
+    let displayedCards = document.querySelectorAll('.card');
+        displayedCards.forEach((card)=>{
+            const h1El = card.querySelector('h1');
+            if(h1El){
+                h1El.remove();
+            }
+        });
+    displayedCards.forEach((card, index) =>{
+        card.querySelector('img').src = `./media/cards/${hand[index]}.svg`
     });
-    
-
-
-    let cardOne = document.querySelector('#card0');
-    let cardTwo = document.querySelector('#card1');
-    let cardThree = document.querySelector('#card2');
-    let cardFour = document.querySelector('#card3');
-    let cardFive = document.querySelector('#card4');
-
-    
-    cardOne.src = `./media/cards/${hand[0]}.svg`
-    cardTwo.src = `./media/cards/${hand[1]}.svg`
-    cardThree.src = `./media/cards/${hand[2]}.svg`
-    cardFour.src = `./media/cards/${hand[3]}.svg`
-    cardFive.src = `./media/cards/${hand[4]}.svg`    
-
-    function selectCards(){
-        
-        console.log(secondDeal)
-        const discardCards =  [];
-        selectedCards.forEach((card, index) => {
-            card.addEventListener('click', () => {
-                console.log(index + " pressed"+" "+ hand[index]);
-                discardCards.push(hand[index]);
-
-                const existingH1 = card.querySelector('h1');
-                const h1 = document.createElement("h1");                
-                if(existingH1){
-                    existingH1.remove();
-                }else{
-                    h1.textContent = 'LUKITTU';
-                    h1.className = 'selected';
-                    card.appendChild(h1);
-                }                
-            });
-        });   console.log(discardCards)
-    };
-    
-
-
-    selectCards();
+    console.log(hand);
 };
-
-
-const dealBtn = document.querySelector('.dealBtn');
-dealBtn.addEventListener('click', displayHand);
+document.querySelector('.dealBtn').addEventListener('click', displayHand) */
 
 
 
-
-
-let cardOneDiv = document.querySelector('.cardOneDiv');
-let cardTwoDiv = document.querySelector('.cardTwoDiv');
-let cardThreeDiv = document.querySelector('.cardThreeDiv');
-let cardFourDiv = document.querySelector('.cardFourDiv');
-let cardFiveDiv = document.querySelector('.cardFiveDiv');
-
-
-
-/* cardOneDiv.addEventListener('click', ()=>{
-    console.log("card one is pressed !!");
-}); */
 
 
 
