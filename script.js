@@ -1,8 +1,4 @@
 
-
-
-
-
 // Coins and Saldo component start
 const twentySent = document.querySelector('#twentySent');
 const fiftySent = document.querySelector('#fiftySent');
@@ -125,15 +121,25 @@ async function getHand(){
     return hand;
 };
 
+let secondDeal = false; 
+
 async function displayHand(){
-    
-    const selectedCards = document.querySelectorAll('.card');
-          
+        
     let hand = await getHand();
-    console.log(secondDeal)
+    console.log(secondDeal);
     console.log(hand);
-    console.log(allCards)
+    console.log(allCards);
+
+    let selectedCards = document.querySelectorAll('.card');
+
+    selectedCards.forEach((card) => {
+        const existingH1 = card.querySelector('h1')
+        if(existingH1){
+            existingH1.remove();
+        }
+    });
     
+
 
     let cardOne = document.querySelector('#card0');
     let cardTwo = document.querySelector('#card1');
@@ -141,25 +147,22 @@ async function displayHand(){
     let cardFour = document.querySelector('#card3');
     let cardFive = document.querySelector('#card4');
 
-    if(secondDeal===false){
-        cardOne.src = `./media/cards/${hand[0]}.svg`
-        cardTwo.src = `./media/cards/${hand[1]}.svg`
-        cardThree.src = `./media/cards/${hand[2]}.svg`
-        cardFour.src = `./media/cards/${hand[3]}.svg`
-        cardFive.src = `./media/cards/${hand[4]}.svg`
-        
-    }
-
-
     
-    
+    cardOne.src = `./media/cards/${hand[0]}.svg`
+    cardTwo.src = `./media/cards/${hand[1]}.svg`
+    cardThree.src = `./media/cards/${hand[2]}.svg`
+    cardFour.src = `./media/cards/${hand[3]}.svg`
+    cardFive.src = `./media/cards/${hand[4]}.svg`    
 
     function selectCards(){
         
         console.log(secondDeal)
+        const discardCards =  [];
         selectedCards.forEach((card, index) => {
             card.addEventListener('click', () => {
                 console.log(index + " pressed"+" "+ hand[index]);
+                discardCards.push(hand[index]);
+
                 const existingH1 = card.querySelector('h1');
                 const h1 = document.createElement("h1");                
                 if(existingH1){
@@ -170,7 +173,7 @@ async function displayHand(){
                     card.appendChild(h1);
                 }                
             });
-        });   
+        });   console.log(discardCards)
     };
     
 
@@ -178,9 +181,10 @@ async function displayHand(){
     selectCards();
 };
 
-let secondDeal = false; 
+
 const dealBtn = document.querySelector('.dealBtn');
 dealBtn.addEventListener('click', displayHand);
+
 
 
 
