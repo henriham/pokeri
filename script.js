@@ -101,10 +101,87 @@ betBtn.addEventListener('click', () =>{
     updateBet();
     tableCol();
 });
+
+let hand = [];
+let allCards = [];
+
+
+async function initCards() {
+    const response = await fetch('cards.php');
+    allCards = await response.json();
+    
+    while(hand.length < 5){
+        let random = Math.floor(Math.random() * allCards.length);
+        let pickedCard = allCards.splice(random, 1)[0];
+        if(pickedCard){
+            hand.push(pickedCard);
+        }
+        
+    }
+    
+}
+
+
+document.querySelector('.dealBtn').addEventListener('click', firstDeal);
+async function firstDeal() {
+    if(allCards.length === 0){
+        await initCards();
+    }
+    let displayedCards = document.querySelectorAll('.card');
+    let h1El = document.querySelector('h1');
+    displayedCards.forEach((card, index) => {
+        if(h1El){
+            h1El.remove();
+        }
+        card.querySelector('img').src = `./media/cards/${hand[index]}.svg`;
+    })
+    console.log(allCards)
+    console.log(hand)
+    
+}
+
+const displayedCards = document.querySelectorAll('.card');
+function cardSelector(event){
+    console.log("card clicked ", event.currentTarget);
+    const card = event.currentTarget;
+    let h1El = card.querySelector('h1');
+    if(!h1El){
+        const h1 = document.createElement('h1');
+        h1.textContent = 'LUKITTU';
+        h1.className = 'selected';
+        card.appendChild(h1); 
+    }else{
+        h1El.remove();
+    }
+    
+    
+}
+displayedCards.forEach((card) => {
+    card.addEventListener('click', cardSelector)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Bet and wintable component  end
 
+
+
 // Cards start
-let allCards = [];
+/* let allCards = [];
 let hand = [];
 let selectedCards = [];
 
@@ -122,7 +199,7 @@ async function displayHand(){
     }    
     if(hand.length === 0){
         hand = getRandomCards(5);
-        console.log("2if" + hand)
+        
     
     }else{
         let newCardsNeeded = 5 - selectedCards.length;
@@ -165,13 +242,13 @@ function cardSelectHandler(){
         const h1El = document.querySelector('h1');
         if(h1El){
             h1El.remove();    
-        }else{
+        }
             const h1 = document.createElement('h1');
             h1.textContent = 'LUKITTU';
             h1.className = '.selected';
             card.appendChild(h1);
             selectedCards.push(index);
-        }
+        
         console.log(`Selected Cards: ${selectedCards}`);
     })
 }
@@ -185,43 +262,6 @@ initCards()
 
 
 
-/* async function getHand(){      
-    
-       
-    
-    while(hand.length < 5){
-        let random = Math.floor(Math.random()*allCards.length)    
-            let pickedCard = allCards.splice(random, 1)[0];
-            if(pickedCard){            
-            hand.push(pickedCard);
-            }   
-    }  
-    console.log(allCards);
-    
-    return hand;
-};
 
-
-async function displayHand(){
-        hand = await getHand();
-    let displayedCards = document.querySelectorAll('.card');
-        displayedCards.forEach((card)=>{
-            const h1El = card.querySelector('h1');
-            if(h1El){
-                h1El.remove();
-            }
-        });
-    displayedCards.forEach((card, index) =>{
-        card.querySelector('img').src = `./media/cards/${hand[index]}.svg`
-    });
-    console.log(hand);
-};
-document.querySelector('.dealBtn').addEventListener('click', displayHand) */
-
-
-
-
-
-
-
+ */
 // Cards end
