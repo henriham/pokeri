@@ -106,9 +106,10 @@ betBtn.addEventListener('click', () =>{
 // CARD DEALING FUNCTINALITY
 
 // This function gets filenames aka "deck" from folder
+let deckOfCards = [];
 async function getDeckOfCards(){
     const response = await fetch('./cards.php');
-    const deckOfCards = await response.json();
+    deckOfCards = await response.json();
     return deckOfCards;
 }
 
@@ -116,6 +117,7 @@ async function getDeckOfCards(){
 let hand = {};
 async function getRandomCards(){
     if(Object.keys(hand).length === 0){
+        
         const deckOfCards = await getDeckOfCards();    
         let tempHand = [];  
         while(tempHand.length < 5){
@@ -127,8 +129,28 @@ async function getRandomCards(){
             acc[index] = value;
             return acc;
         }, {});    
-    console.log(hand);
-    console.log(deckOfCards);
-    }        
+        console.log(hand);
+        console.log(deckOfCards);
+        return hand;
+    }
+    
 }
-getRandomCards();
+
+// this function displays cards to the dom...
+async function displayCards(){
+    await getRandomCards();
+    if(hand){
+        console.log("getrandomcfunc")
+        console.log(hand)
+        console.log(deckOfCards)        
+
+        Object.entries(hand).forEach(([key, card])=>{
+            console.log(`key ${key}, card: ${card}`)
+            let cardDiv = document.querySelector(`#card${key}`)            
+            const img = cardDiv.querySelector('img');                
+            img.src = `./media/cards/${card}.svg`;        
+        });
+    } 
+}
+document.querySelector('.dealBtn').addEventListener('click', displayCards);
+
