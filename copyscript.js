@@ -102,116 +102,102 @@ betBtn.addEventListener('click', () =>{
     tableCol();
 });
 
+let hand = [];
+let allCards = [];
 
-// CARD DEALING FUNCTINALITY
-
-// This function gets filenames aka "deck" from folder
-let deckOfCards = [];
-async function getDeckOfCards(){
-    const response = await fetch('./cards.php');
-    deckOfCards = await response.json();
-    return deckOfCards;
-}
-
-// this function serves 5 random cards at the start and hopefully cardchange also...
-let firstDealCompleted = false;
-
-let hand = {};
-async function getRandomCards(){
-    if(Object.keys(hand).length === 0 && firstDealCompleted === false){
-        
-        const deckOfCards = await getDeckOfCards();    
-        let tempHand = [];  
-        while(tempHand.length < 5){
-            let random = Math.floor(Math.random() * deckOfCards.length);
-            let pickedCard = deckOfCards.splice(random, 1)[0];
-            tempHand.push(pickedCard);            
-        }
-        hand = tempHand.reduce((acc, value, index) =>{
-            acc[index] = value;
-            return acc;
-        }, {});    
-        console.log(hand);
-        console.log(deckOfCards);
-        return hand;
-    }else{
-        console.log("delt alrdy!")
-    }  
-}
-
-// this function displays cards to the dom...
-document.querySelector('.dealBtn').addEventListener('click', displayCards);
-
-async function displayCards(){
-    await getRandomCards();
-    if(Object.keys(hand).length === 5 && firstDealCompleted === false){
-        /* console.log("getrandomcfunc")
-        console.log(hand)
-        console.log(deckOfCards)  */       
-        let cardData = []; 
-        Object.entries(hand).forEach(([key, card])=>{
-            //console.log(`key ${key}, card: ${card}`);
-            let cardDiv = document.querySelector(`#card${key}`);
-            
-            const img = cardDiv.querySelector('img');                
-            img.src = `./media/cards/${card}.svg`;
-
-            cardData.push({cardDiv, key})
-        });
-    firstDealCompleted = true;
+async function initCards() {    
+    const response = await fetch('cards.php');
+    allCards = await response.json();
     
-    return cardData
+    while(hand.length < 5){
+        let random = Math.floor(Math.random() * allCards.length);
+        let pickedCard = allCards.splice(random, 1)[0];
+        if(pickedCard){
+            hand.push(pickedCard);
+        }        
+    }
+}
+
+document.querySelector('.dealBtn').addEventListener('click', firstDeal);
+
+async function firstDeal() {
+    if(!firstDealCompleted){   
+        if(allCards.length === 0){
+            await initCards();
+        }
+        let displayedCards = document.querySelectorAll('.card');
+        let h1El = document.querySelector('h1');
+        displayedCards.forEach((card, index) => {
+            if(h1El){
+                h1El.remove();
+            }
+        card.querySelector('img').src = `./media/cards/${hand[index]}.svg`;
+        })
+        console.log(allCards);
+        console.log(hand);
+        firstDealCompleted = true;
+    }
+}
+
+const displayedCards = document.querySelectorAll('.card');
+let firstDealCompleted = false;
+let selectedCards = []; // holds selected cards
+
+function cardSelector(event){
+    
+    const card = event.currentTarget;
+    const index = Array.from(displayedCards).indexOf(card);
+    let h1El = card.querySelector('h1');
+    if(!firstDealCompleted){
+        console.log("cards have not been delt yet !");
+        return;
+    }    
+    if(!h1El){
+        const h1 = document.createElement('h1');
+        h1.textContent = 'LUKITTU';
+        h1.className = 'selected';
+        card.appendChild(h1); 
+        selectedCards.push({ index, value: hand[index]});
+        console.log(`Selected: ${JSON.stringify(selectedCards)}`);
+    }else{
+        h1El.remove();
+        const cardRemove = selectedCards.find(card => card.index === index);
+        selectedCards.splice(selectedCards.indexOf(cardRemove), 1);
+        console.log(`card removed, Remaining; ${JSON.stringify(selectedCards)}`);
+        
     } 
     
 }
+displayedCards.forEach((card) => {
+    card.addEventListener('click', cardSelector)
+});
 
 
-let selectedCards = {0: null, 1: null, 2: null, 3: null, 4: null};
-function selectCards(card, index){
-    
-    
-    
-    //const card = document.querySelector(`#card${key}`);        
-    const h1 = document.createElement('h1');
-    const h1Element = card.querySelector('h1');
-    if(!firstDealCompleted){
-        console.log("not served yet!")
-    }
-    
-    if(firstDealCompleted && !h1Element){
-        /* console.log(card)
-        console.log(index)
-        console.log(hand) */
-        h1.textContent = `LUKITTU`;
-        h1.className = 'selected';
-        card.appendChild(h1);
-        selectedCards[index] = hand[index];
-        console.log(hand[index])
+document.querySelector('.dealBtn').addEventListener('click', secondDeal);
+async function secondDeal(){
+    if(firstDealCompleted){       
+        // hand is transformed into obj, with indexes to swap them at their places
+        /* const handIndexes = hand.map((card, index) => ({ index, card}));
+        console.log(JSON.stringify(handIndexes)); */
+        console.log(allCards)
+        console.log("2deal " + JSON.stringify(selectedCards))
         console.log(selectedCards)
 
-    }if(firstDealCompleted && h1Element){
-        h1Element.remove();
-        selectedCards[index] = null;
-        console.log(`${hand[index]} removed!`)
-    }
-    
-    
-    /* if(h1Element){
-        h1.remove()
-    }
-    if(!h1Element){
-        h1.textContent = `LUKITTU`;
-        h1.className = 'selected';
-        card.appendChild(h1);  
-    } */
+        if(selectedCards.length < 5){
+            selectedCards = Array.from({ length: 5}, (_, i) =>{
+                const existingCard = selectedCards.find(card => card.index === i);
+                return existingCard || {index: i, value: null};
+            })
+        }
+        
+        
 
+        
+        console.log("selesC: "+ JSON.stringify(selectedCards))
 
+        firstDealCompleted = false;
+        allCards = [];
+        hand = [];
+        
+    }
 }
-
-const cardDivs = document.querySelectorAll('.card');
-cardDivs.forEach((card, index)=>{
-    card.addEventListener('click', ()=>{
-        selectCards(card, index)
-    })
-})
-
