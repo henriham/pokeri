@@ -102,7 +102,6 @@ betBtn.addEventListener('click', () =>{
     tableCol();
 });
 
-
 // CARD DEALING FUNCTINALITY
 
 // This function gets filenames aka "deck" from folder
@@ -114,12 +113,11 @@ async function getDeckOfCards(){
 }
 
 // this function serves 5 random cards at the start and hopefully cardchange also...
-let firstDealCompleted = false;
-
+let firstDealCompleted = false; 
+let secondDealCompleted = false;
 let hand = {};
 async function getRandomCards(){
-    if(Object.keys(hand).length === 0 && firstDealCompleted === false){
-        
+    if(Object.keys(hand).length === 0 && firstDealCompleted === false){        
         const deckOfCards = await getDeckOfCards();    
         let tempHand = [];  
         while(tempHand.length < 5){
@@ -134,9 +132,27 @@ async function getRandomCards(){
         console.log(hand);
         console.log(deckOfCards);
         return hand;
-    }else{
-        console.log("delt alrdy!")
-    }  
+    }
+    // this part serves second card deal
+    if(firstDealCompleted === true){
+        console.log("second cards inc!")
+
+        Object.entries(selectedCards).forEach(([key, card]) =>{
+            hand[key] = card;
+            console.log(key, card);
+        })
+
+        Object.entries(hand).forEach(([key, card]) =>{
+            if(card === null){
+                let random = Math.floor(Math.random() * deckOfCards.length);
+                let pickedCard = deckOfCards.splice(random, 1)[0];    
+                hand[key] = pickedCard;
+            }
+        })
+        console.log(hand);
+        console.log(deckOfCards)   
+        return hand;
+    }
 }
 
 // this function displays cards to the dom...
@@ -151,33 +167,29 @@ async function displayCards(){
         let cardData = []; 
         Object.entries(hand).forEach(([key, card])=>{
             //console.log(`key ${key}, card: ${card}`);
-            let cardDiv = document.querySelector(`#card${key}`);
-            
+            let cardDiv = document.querySelector(`#card${key}`);            
             const img = cardDiv.querySelector('img');                
             img.src = `./media/cards/${card}.svg`;
-
             cardData.push({cardDiv, key})
         });
-    firstDealCompleted = true;
-    
+    firstDealCompleted = true;    
     return cardData
-    } 
-    
+    }
+    if(firstDealCompleted === true){
+        //await getRandomCards();
+
+        
+    }
 }
 
 
 let selectedCards = {0: null, 1: null, 2: null, 3: null, 4: null};
 function selectCards(card, index){
-    
-    
-    
-    //const card = document.querySelector(`#card${key}`);        
     const h1 = document.createElement('h1');
-    const h1Element = card.querySelector('h1');
+    const h1Element = card.querySelector('h1');    
     if(!firstDealCompleted){
         console.log("not served yet!")
-    }
-    
+    }    
     if(firstDealCompleted && !h1Element){
         /* console.log(card)
         console.log(index)
@@ -185,33 +197,23 @@ function selectCards(card, index){
         h1.textContent = `LUKITTU`;
         h1.className = 'selected';
         card.appendChild(h1);
-        selectedCards[index] = hand[index];
-        console.log(hand[index])
-        console.log(selectedCards)
-
-    }if(firstDealCompleted && h1Element){
+        selectedCards[index] = hand[index];        
+        //console.log(hand[index]);
+        console.log(selectedCards);
+        console.log(hand)
+    }
+    if(firstDealCompleted && h1Element){
         h1Element.remove();
-        selectedCards[index] = null;
-        console.log(`${hand[index]} removed!`)
+        selectedCards[index] = null;        
+        //console.log(`${hand[index]} removed!`);
+        console.log(selectedCards);
+        console.log(hand)
     }
-    
-    
-    /* if(h1Element){
-        h1.remove()
-    }
-    if(!h1Element){
-        h1.textContent = `LUKITTU`;
-        h1.className = 'selected';
-        card.appendChild(h1);  
-    } */
-
-
 }
-
 const cardDivs = document.querySelectorAll('.card');
 cardDivs.forEach((card, index)=>{
     card.addEventListener('click', ()=>{
         selectCards(card, index)
-    })
-})
+    });
+});
 
